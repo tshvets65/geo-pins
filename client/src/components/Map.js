@@ -8,6 +8,7 @@ const Map = ({ classes }) => {
   return <div>Map</div>;
 };
 
+//const styles = theme => { // alternative way of using styles 
 const styles = {
   root: {
     display: "flex"
