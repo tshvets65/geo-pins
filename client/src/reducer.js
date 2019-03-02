@@ -27,6 +27,10 @@ const reducer = (state, action) => {
         case 'SET_PIN':
             return { ...state, currentPin: action.payload, draft: null }
 
+        case 'DELETE_PIN':
+            const filteredPins = state.pins.filter(pin => pin._id !== action.payload)
+            return { ...state, pins: filteredPins }
+
         default:
             return state
     }
