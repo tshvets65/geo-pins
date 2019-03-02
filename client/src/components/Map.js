@@ -7,6 +7,7 @@ import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
 import PinIcon from './PinIcon'
 import Context from '../context'
+import Blog from './Blog'
 
 const INITIAL_VIEWPORT = {
   latitude: 37.7577,
@@ -79,6 +80,7 @@ const Map = ({ classes }) => {
           </Marker>
         )}
       </ReactMapGL>
+      <Blog />
     </div>
   )
 };
