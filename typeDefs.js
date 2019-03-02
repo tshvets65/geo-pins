@@ -13,11 +13,19 @@ type Pin {
     createdAt: String
     title: String
     content: String
-    iage: String
+    image: String
     latitude: Float
     longitude: Float
     author: User
     comments: [Comment]
+}
+
+input CreatePinInput {
+    title: String
+    content: String
+    image: String
+    latitude: Float
+    longitude: Float
 }
 
 type Comment {
@@ -28,5 +36,9 @@ type Comment {
 
 type Query {
     me: User
+}
+
+type Mutation {
+    createPin(input: CreatePinInput!): Pin
 }
 `
