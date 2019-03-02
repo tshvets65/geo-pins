@@ -36,6 +36,7 @@ type Comment {
 
 type Query {
     me: User
+    getPins: [Pin!]
 }
 
 type Mutation {

@@ -18,6 +18,12 @@ const reducer = (state, action) => {
         case 'DELETE_DRAFT':
             return { ...state, draft: null }
 
+        case 'GET_PINS':
+            return { ...state, pins: action.payload }
+
+        case 'CREATE_PIN':
+            return { ...state, pins: [...state.pins, action.payload] }
+
         default:
             return state
     }
