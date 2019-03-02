@@ -10,7 +10,7 @@ const reducer = (state, action) => {
             return { ...state, isAuth: false, currentUser: null }
 
         case 'CREATE_DRAFT':
-            return { ...state, draft: { latitude: 0, longitude: 0 } }
+            return { ...state, currentPin: null, draft: { latitude: 0, longitude: 0 } }
 
         case 'UPDATE_DRAFT_LOCATION':
             return { ...state, draft: action.payload }
@@ -23,6 +23,9 @@ const reducer = (state, action) => {
 
         case 'CREATE_PIN':
             return { ...state, pins: [...state.pins, action.payload] }
+
+        case 'SET_PIN':
+            return { ...state, currentPin: action.payload, draft: null }
 
         default:
             return state
