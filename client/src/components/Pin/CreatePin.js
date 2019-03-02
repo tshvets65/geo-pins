@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import axios from 'axios'
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -16,11 +17,6 @@ const CreatePin = ({ classes }) => {
   const [image, setImage] = useState('')
   const [content, setContent] = useState('')
 
-  const handleSubmit = event => {
-    event.preventDefault()
-
-  }
-
   const handleDeletedraft = () => {
     setTitle('')
     setImage('')
@@ -28,8 +24,27 @@ const CreatePin = ({ classes }) => {
     dispatch({ type: 'DELETE_DRAFT' })
   }
 
+  const handleImageUpload = async () => {
+    try {
+      const data = new FormData()
+      data.append('file', image)
+      data.append('cloud_name', process.env.REACT_APP_CLOUD_NAME)
+      data.append('upload_preset', 'geopins')
+      const response = await axios.post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/image/upload`, data)
+      return response.data.url
+    } catch (err) {
+      console.error('Error uploading image', err)
+    }
+  }
+
+  const handleSubmit = async event => {
+    event.preventDefault()
+    const url = await handleImageUpload()
+    console.log({ title, image, content, url })
+  }
+
   return (
-    <form className={classes.form}>
+    <form className={classes.form} onSubmit={handleSubmit}>
       <Typography
         className={classes.alignCenter}
         component='h2'
