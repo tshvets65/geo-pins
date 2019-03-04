@@ -5,10 +5,13 @@ import differenceInMinutes from 'date-fns/difference_in_minutes'
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
+import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
+import { Subscription } from 'react-apollo'
 
 import { useClient } from '../client'
 import { GET_PINS_QUERY } from '../graphql/queries'
 import { DELETE_PIN_MUTATION } from '../graphql/mutations'
+import { PIN_ADDED_SUBSCRIPTION, PIN_UPDATED_SUBSCRIPTION, PIN_DELETED_SUBSCRIPTION } from '../graphql/subscriptions'
 import PinIcon from './PinIcon'
 import Context from '../context'
 import Blog from './Blog'
@@ -21,6 +24,7 @@ const INITIAL_VIEWPORT = {
 
 const Map = ({ classes }) => {
   const client = useClient()
+  const mombileSize = useMediaQuery('(max-width: 650px)')
   const { state, dispatch } = useContext(Context)
 
   useEffect(() => {
@@ -74,18 +78,18 @@ const Map = ({ classes }) => {
 
   const handleDeletePin = async pin => {
     const variables = { pinId: pin._id }
-    const { deletePin } = await client.request(DELETE_PIN_MUTATION, variables)
-    dispatch({ type: 'DELETE_PIN', payload: deletePin._id })
+    await client.request(DELETE_PIN_MUTATION, variables)
     setPopup(null)
   }
 
   return (
-    <div className={classes.root}>
+    <div className={mombileSize ? classes.rootMobile : classes.root}>
       <ReactMapGL
         width='100vw'
-        height='calc(100vh - 64px'
+        height='calc(100vh - 64px)'
         mapStyle='mapbox://styles/mapbox/streets-v9'
-        mapboxApiAccessToken='pk.eyJ1IjoidHNodmV0cyIsImEiOiJjanNycDdrcmYxa290NDlvMnN1anU3Z2U0In0.uuw3Jo1sd6HGsAcvRVXweQ'
+        mapboxApiAccessToken={process.env.REACT_APP_MAP_API_KEY}
+        scrollZoom={!mombileSize}
         onViewportChange={newViewport => setViewport(newViewport)}
         onClick={handleMapClick}
         {...viewport}
@@ -149,6 +153,29 @@ const Map = ({ classes }) => {
           </Popup>
         )}
       </ReactMapGL>
+
+      <Subscription
+        subscription={PIN_ADDED_SUBSCRIPTION}
+        onSubscriptionData={({ subscriptionData }) => {
+          const { pinAdded } = subscriptionData.data
+          dispatch({ type: "CREATE_PIN", payload: pinAdded })
+        }}
+      />
+      <Subscription
+        subscription={PIN_UPDATED_SUBSCRIPTION}
+        onSubscriptionData={({ subscriptionData }) => {
+          const { pinUpdated } = subscriptionData.data
+          dispatch({ type: "CREATE_COMMENT", payload: pinUpdated })
+        }}
+      />
+      <Subscription
+        subscription={PIN_DELETED_SUBSCRIPTION}
+        onSubscriptionData={({ subscriptionData }) => {
+          const { pinDeleted } = subscriptionData.data
+          dispatch({ type: "DELETE_PIN", payload: pinDeleted })
+        }}
+      />
+
       <Blog />
     </div>
   )
