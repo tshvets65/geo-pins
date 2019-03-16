@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import { GraphQLClient } from 'graphql-request'
 
-export const BASE_URL = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : 'http://localhost:4000/graphql'
-
 export const useClient = () => {
     const [idToken, setIdToken] = useState('')
 
@@ -11,7 +9,7 @@ export const useClient = () => {
         setIdToken(token)
     }, [])
 
-    return new GraphQLClient(BASE_URL, {
+    return new GraphQLClient(process.env.REACT_APP_GRAPHQL_URL, {
         headers: { authorization: idToken }
     })
 }

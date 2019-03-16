@@ -40,6 +40,14 @@ const Map = ({ classes }) => {
 
   const [popup, setPopup] = useState(null)
 
+  // remove popup if pin deleted by the author
+  useEffect(() => {
+    const pinExists = popup && state.pins.findIndex(pin => pin._id === popup._id) > -1
+    if (!pinExists) {
+      setPopup(null)
+    }
+  }, [state.pins.length])
+
   const getPins = async () => {
     const { getPins } = await client.request(GET_PINS_QUERY)
     dispatch({ type: 'GET_PINS', payload: getPins })
@@ -88,7 +96,7 @@ const Map = ({ classes }) => {
         width='100vw'
         height='calc(100vh - 64px)'
         mapStyle='mapbox://styles/mapbox/streets-v9'
-        mapboxApiAccessToken={process.env.REACT_APP_MAP_API_KEY}
+        mapboxApiAccessToken={process.env.REACT_APP_MAP_API_TOKEN}
         scrollZoom={!mombileSize}
         onViewportChange={newViewport => setViewport(newViewport)}
         onClick={handleMapClick}

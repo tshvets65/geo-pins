@@ -55,9 +55,9 @@ export const PIN_UPDATED_SUBSCRIPTION = gql`
 `
 
 export const PIN_DELETED_SUBSCRIPTION = gql`
-    subscription {
-        pinDeleted {
-            _id
-        }
+  subscription {
+    pinDeleted {
+      _id
     }
+  }
 `

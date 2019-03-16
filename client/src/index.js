@@ -16,7 +16,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import * as serviceWorker from "./serviceWorker";
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:4000/graphql',
+  uri: process.env.REACT_APP_WS_URI,
   options: {
     reconnect: true
   }
