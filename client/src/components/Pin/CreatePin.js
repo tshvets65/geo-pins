@@ -37,7 +37,7 @@ const CreatePin = ({ classes }) => {
       data.append('cloud_name', process.env.REACT_APP_CLOUD_NAME)
       data.append('upload_preset', 'geopins')
       const response = await axios.post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/image/upload`, data)
-      return response.data.url
+      return response.data.secure_url
     } catch (err) {
       console.error('Error uploading image', err)
     }

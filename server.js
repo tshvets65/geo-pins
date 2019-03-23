@@ -11,6 +11,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
     .catch(err => console.log(err))
 
 const server = new ApolloServer({
+    cors: true,
     typeDefs,
     resolvers,
     context: async ({ req }) => {
@@ -22,7 +23,7 @@ const server = new ApolloServer({
                 currentUser = await findOrCreateUser(authToken)
             }
         } catch (err) {
-            console.error(`Unable to authenticate user with token ${authToken}`);
+            // console.error(`Unable to authenticate user with token ${authToken}`);
         }
         return { currentUser }
     }
