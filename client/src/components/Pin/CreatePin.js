@@ -20,6 +20,7 @@ const CreatePin = ({ classes }) => {
   const { state, dispatch } = useContext(Context)
   const [title, setTitle] = useState('')
   const [image, setImage] = useState('')
+  const [preview, setPreview] = useState(null)
   const [content, setContent] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -41,6 +42,13 @@ const CreatePin = ({ classes }) => {
     } catch (err) {
       console.error('Error uploading image', err)
     }
+  }
+
+  const handleOnImageChange = event => {
+    setImage(event.target.files[0])
+    try {
+      setPreview(URL.createObjectURL(event.target.files[0]))
+    } catch (err) { }
   }
 
   const handleSubmit = async event => {
@@ -69,19 +77,21 @@ const CreatePin = ({ classes }) => {
       >
         <LandscapeIcon className={classes.iconLarge} /> Pin Location
       </Typography>
-      <div>
-        <TextField
-          name='title'
-          label='title'
-          placeholder='Insert pin title'
-          onChange={e => setTitle(e.target.value)}
-        />
+
+      <TextField fullWidth
+        name='title'
+        label='title'
+        placeholder='Insert pin title'
+        onChange={e => setTitle(e.target.value)}
+      />
+
+      <div style={{ display: 'flex' }}>
         <input
           accept='image/*'
           id='image'
           type='file'
           className={classes.input}
-          onChange={e => setImage(e.target.files[0])}
+          onChange={handleOnImageChange}
         />
         <label htmlFor="image">
           <Button
@@ -93,6 +103,7 @@ const CreatePin = ({ classes }) => {
             <AddAPhotoIcon />
           </Button>
         </label>
+        {preview && <img style={{ maxWidth: '80px', maxHeight: '60px', marginTop: '10px' }} src={preview} alt="preview" />}
       </div>
       <div className={classes.contentField}>
         <TextField

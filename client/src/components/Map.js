@@ -74,7 +74,7 @@ const Map = ({ classes }) => {
 
   const highlightNewPin = pin => {
     const isNewPin = differenceInMinutes(Date.now(), Number(pin.createdAt)) <= 30
-    return isNewPin ? 'limegreen' : 'darkblue'
+    return isNewPin ? 'limegreen' : 'purple'
   }
 
   const handleSelectPin = pin => {

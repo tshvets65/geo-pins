@@ -26,7 +26,7 @@ const Signout = ({ classes }) => {
             variant='body1'
             className={classes.buttonText}
           >
-            Signout
+            Log Out
           </Typography>
           <ExitToAppIcon className={classes.buttonIcon} />
         </span>
@@ -45,7 +45,7 @@ const styles = {
   },
   buttonIcon: {
     marginLeft: "5px",
-    color: "orange"
+    color: "white"
   }
 };
 
